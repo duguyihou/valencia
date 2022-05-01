@@ -4,9 +4,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthorsModule } from './authors/authors.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
+import { InvoiceModule } from './invoice/invoice.module';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
   imports: [
@@ -14,6 +15,8 @@ import databaseConfig from './config/database.config';
       load: [databaseConfig],
       envFilePath: ['.env.local'],
     }),
+    InvoiceModule,
+    CustomerModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
@@ -32,7 +35,6 @@ import databaseConfig from './config/database.config';
       }),
       inject: [ConfigService],
     }),
-    AuthorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
