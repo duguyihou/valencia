@@ -8,11 +8,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { InvoiceModule } from './invoice/invoice.module';
 import { CustomerModule } from './customer/customer.module';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfig],
+      load: [configuration, databaseConfig],
       envFilePath: ['.env.local'],
     }),
     InvoiceModule,
@@ -30,7 +31,7 @@ import { CustomerModule } from './customer/customer.module';
         username: configService.get<string>('postgres.username'),
         password: configService.get<string>('postgres.password'),
         database: configService.get<string>('postgres.databaseName'),
-        entities: [],
+        autoLoadEntities: true,
         synchronize: true,
       }),
       inject: [ConfigService],
